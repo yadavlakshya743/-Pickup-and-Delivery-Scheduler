@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  AGENT
+  OPERATOR
+}
+
+model User {
+  user_id    String   @id @default(uuid())
+  name       String
+  password   String
+  phone      String?
+  email      String   @unique
+  role       Role     @default(CUSTOMER)
+  created_at DateTime @default(now())
+  orders     Order[]
+  agent      Agent?
+
+  @@map("USERS")
+}
+
+model Order {
+  order_id          String             @id @default(uuid())
+  user_id           String
+  pickup_location   String
+  delivery_location String
+  status            String             @default("CREATED")
+  priority          String             @default("STANDARD")
+  created_at        DateTime           @default(now())
+  updated_at        DateTime           @updatedAt
+  
+  user              User               @relation(fields: [user_id], references: [user_id])
+  assignments       Assignment[]
+  delivery_statuses DeliveryStatus[]
+
+  @@map("ORDERS")
+}
+
+model Agent {
+  agent_id   String   @id @default(uuid())
+  user_id    String   @unique
+  status     String   @default("AVAILABLE")
+  created_at DateTime @default(now())
+
+  user       User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  assignments Assignment[]
+
+  @@map("AGENTS")
+}
+
+model Assignment {
+  assignment_id     String    @id @default(uuid())
+  order_id          String
+  agent_id          String
+  assignment_status String    @default("ASSIGNED")
+  assigned_at       DateTime  @default(now())
+  completed_at      DateTime?
+
+  order Order @relation(fields: [order_id], references: [order_id])
+  agent Agent @relation(fields: [agent_id], references: [agent_id])
+
+  @@map("ASSIGNMENTS")
+}
+
+model DeliveryStatus {
+  status_id  String   @id @default(uuid())
+  order_id   String
+  status     String
+  updated_at DateTime @default(now())
+
+  order Order @relation(fields: [order_id], references: [order_id])
+
+  @@map("DELIVERY_STATUS")
+}
+
+model EventLog {
+  event_id   String   @id @default(uuid())
+  event_type String
+  entity_id  String
+  payload    Json
+  created_at DateTime @default(now())
+
+  @@map("EVENT_LOGS")
+}
+
+model SystemMetric {
+  metric_id    String   @id @default(uuid())
+  service_name String
+  metric_type  String
+  value        Float
+  recorded_at  DateTime @default(now())
+
+  @@map("SYSTEM_METRICS")
+}
