@@ -15,7 +15,7 @@ const app: Express = express();
 
 // Security Middlewares
 app.use(helmet());
-app.use(cors());
+app.use(cors({ origin: process.env.CORS_ORIGIN || '*' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

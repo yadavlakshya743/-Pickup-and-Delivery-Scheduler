@@ -3,6 +3,14 @@ import { Kafka, Producer, Consumer } from 'kafkajs';
 const kafka = new Kafka({
     clientId: 'pickup-delivery-scheduler',
     brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
+    ...(process.env.KAFKA_USERNAME && process.env.KAFKA_PASSWORD && {
+        ssl: true,
+        sasl: {
+            mechanism: 'scram-sha-256',
+            username: process.env.KAFKA_USERNAME,
+            password: process.env.KAFKA_PASSWORD,
+        },
+    }),
 });
 
 const producer: Producer = kafka.producer();
