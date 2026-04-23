@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import prisma from '../utils/prisma';
-import { publishEvent } from '../utils/kafka';
+import { publishEvent } from '../utils/redis';
 import { autoAssignOrder, autoAssignPendingOrders } from './schedulerController';
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {

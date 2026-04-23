@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middlewares/authMiddleware';
 import prisma from '../utils/prisma';
-import { publishEvent } from '../utils/kafka';
+import { publishEvent } from '../utils/redis';
 import { autoAssignPendingOrders } from './schedulerController';
 
 export const getAgents = async (req: AuthRequest, res: Response): Promise<void> => {

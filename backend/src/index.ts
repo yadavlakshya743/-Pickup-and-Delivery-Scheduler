@@ -1,14 +1,11 @@
 import app from './app';
-import { connectProducer, connectConsumer } from './utils/kafka';
-import { setupConsumers } from './services/kafkaConsumer';
+import { setupConsumers } from './services/eventConsumer';
 
 const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
     try {
-        // Connect to Event Brokers
-        await connectProducer();
-        await connectConsumer();
+        // Connect to Event Brokers (Handled by Redis on import)
 
         // Setup listeners
         await setupConsumers();

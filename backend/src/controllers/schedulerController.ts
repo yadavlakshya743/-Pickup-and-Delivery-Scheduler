@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import redisClient from '../utils/redis';
-import { publishEvent } from '../utils/kafka';
+import { publishEvent } from '../utils/redis';
 import prisma from '../utils/prisma';
 
 /**
