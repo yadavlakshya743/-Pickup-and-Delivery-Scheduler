@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Users, Package, AlertCircle, Activity, CheckCircle, Clock, Truck, Filter } from 'lucide-react';
+import { Users, Package, AlertCircle, Activity, CheckCircle, Clock, Filter } from 'lucide-react';
 import api from '../lib/api';
 
 type StatusFilter = 'ALL' | 'CREATED' | 'ASSIGNED' | 'PICKED_UP' | 'DELIVERED';
@@ -7,7 +7,7 @@ type StatusFilter = 'ALL' | 'CREATED' | 'ASSIGNED' | 'PICKED_UP' | 'DELIVERED';
 const OperatorDashboard = ({ user }: { user: any }) => {
     const [orders, setOrders] = useState<any[]>([]);
     const [agents, setAgents] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [, setLoading] = useState(false);
     const [assigning, setAssigning] = useState<string | null>(null);
     const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL');
 
@@ -144,8 +144,8 @@ const OperatorDashboard = ({ user }: { user: any }) => {
                                 key={tab.value}
                                 onClick={() => setStatusFilter(tab.value)}
                                 className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${statusFilter === tab.value
-                                        ? 'bg-indigo-600 text-white shadow-sm'
-                                        : 'text-slate-600 hover:bg-slate-100'
+                                    ? 'bg-indigo-600 text-white shadow-sm'
+                                    : 'text-slate-600 hover:bg-slate-100'
                                     }`}
                             >
                                 {tab.label} ({tab.count})
@@ -195,8 +195,8 @@ const OperatorDashboard = ({ user }: { user: any }) => {
                                                 </td>
                                                 <td className="px-4 py-3">
                                                     <span className={`px-2 py-0.5 text-xs font-bold rounded-md ${order.priority === 'EXPRESS' ? 'bg-purple-100 text-purple-700' :
-                                                            order.priority === 'SAME_DAY' ? 'bg-orange-100 text-orange-700' :
-                                                                'bg-slate-100 text-slate-600'
+                                                        order.priority === 'SAME_DAY' ? 'bg-orange-100 text-orange-700' :
+                                                            'bg-slate-100 text-slate-600'
                                                         }`}>
                                                         {order.priority}
                                                     </span>
