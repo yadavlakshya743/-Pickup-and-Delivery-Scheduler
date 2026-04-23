@@ -1,16 +1,22 @@
 import Redis from 'ioredis';
 
-const redisHost = process.env.REDIS_HOST || 'localhost';
-const redisPort = process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379;
-
-const redisConfig = {
-    host: redisHost,
-    port: redisPort,
+// Support REDIS_URL (for Upstash / cloud with TLS) or fallback to host/port (local dev)
+const createRedisClient = () => {
+    if (process.env.REDIS_URL) {
+        return new Redis(process.env.REDIS_URL, {
+            tls: { rejectUnauthorized: false },
+            maxRetriesPerRequest: 3,
+        });
+    }
+    return new Redis({
+        host: process.env.REDIS_HOST || 'localhost',
+        port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379,
+    });
 };
 
-const redisClient = new Redis(redisConfig);
-const redisPublisher = new Redis(redisConfig);
-const redisSubscriber = new Redis(redisConfig);
+const redisClient = createRedisClient();
+const redisPublisher = createRedisClient();
+const redisSubscriber = createRedisClient();
 
 redisClient.on('error', (err) => console.error('Redis connection error:', err));
 redisClient.on('connect', () => console.log('Connected to Redis Cache'));
