@@ -1,0 +1,9 @@
+-- AlterTable
+ALTER TABLE "AGENTS" ADD COLUMN     "current_lat" DOUBLE PRECISION,
+ADD COLUMN     "current_lng" DOUBLE PRECISION;
+
+-- AlterTable
+ALTER TABLE "ORDERS" ADD COLUMN     "delivery_lat" DOUBLE PRECISION,
+ADD COLUMN     "delivery_lng" DOUBLE PRECISION,
+ADD COLUMN     "pickup_lat" DOUBLE PRECISION,
+ADD COLUMN     "pickup_lng" DOUBLE PRECISION;
