@@ -1,7 +1,7 @@
 import app from './app';
 import { setupConsumers } from './services/eventConsumer';
 
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT as string, 10) || 3000;
 
 const startServer = async () => {
     try {
@@ -10,7 +10,7 @@ const startServer = async () => {
         // Setup listeners
         await setupConsumers();
 
-        app.listen(PORT, () => {
+        app.listen(PORT, '0.0.0.0', () => {
             console.log(`Server is running on port ${PORT}`);
         });
     } catch (error) {
